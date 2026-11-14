@@ -1,0 +1,12 @@
+{
+	"title"		:	"GHM PhysBlood",
+	"type"		:	"effects",
+	"tags"		:	[ "realism", "fun" ],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*",
+		"luac.out"
+	]
+}

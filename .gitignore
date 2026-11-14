@@ -1,0 +1,5 @@
+native/out/
+native/gmod-module-base/
+dist/
+__pycache__/
+*.pyc

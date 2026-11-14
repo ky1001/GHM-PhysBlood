@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.bat text eol=crlf
+installer/README.txt text eol=crlf
+*.vcs binary
+*.dll binary
+*.png binary

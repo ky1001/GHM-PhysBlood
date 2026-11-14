@@ -1,0 +1,78 @@
+# Builds the native module from native/ghm_physblood.cpp and packs the shader pack zip.
+# Every push: the zip is kept as a workflow artifact. A tag v* (for example v1.26.11): the zip is also published
+# on the releases page, with a signed build-provenance attestation that proves it was built here from this commit
+# (check it with: gh attestation verify GHM_PhysBlood_Shaders_<version>.zip --repo <owner>/<repo>).
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MinGW-w64
+        run: sudo apt-get update && sudo apt-get install -y mingw-w64 zip
+
+      - name: Get the Garry's Mod module headers (Facepunch/gmod-module-base, pinned)
+        run: |
+          git clone https://github.com/Facepunch/gmod-module-base.git native/gmod-module-base
+          git -C native/gmod-module-base checkout e0156e5f96cd0bad8eed738f0d20e2c9a14b2a0d
+
+      - name: Build the native module (win32 + win64)
+        run: bash native/build.sh
+
+      - name: Show what the DLLs import (only KERNEL32 and msvcrt)
+        run: |
+          for f in native/out/*.dll; do echo "== $f"; x86_64-w64-mingw32-objdump -p "$f" | grep "DLL Name" || true; done
+
+      - name: Pack the shader pack
+        run: bash tools/make_pack.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GHM_PhysBlood_Shaders
+          path: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+
+      - name: Attest build provenance
+        if: startsWith(github.ref, 'refs/tags/v')
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/*.zip
+            dist/GHM_PhysBlood_Shaders_*/garrysmod/lua/bin/*.dll
+
+      - name: Publish the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ZIP=$(ls dist/*.zip)
+          {
+            echo "Shader pack and native module for GHM PhysBlood ${GITHUB_REF_NAME#v}."
+            echo
+            echo "Download **$(basename "$ZIP")**, extract it, and run \`Install_GHM_PhysBlood_Shaders.bat\` (a plain batch file) or copy its \`garrysmod\` folder over your GarrysMod folder. See the README inside the zip."
+            echo
+            echo "Built by GitHub Actions from commit ${GITHUB_SHA} ([build log](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}))."
+            echo
+            echo "SHA-256:"
+            echo '```'
+            cat dist/SHA256SUMS.txt
+            echo '```'
+          } > dist/notes.md
+          gh release create "$GITHUB_REF_NAME" "$ZIP" dist/SHA256SUMS.txt \
+            --title "GHM PhysBlood ${GITHUB_REF_NAME#v} - shader pack" --notes-file dist/notes.md
