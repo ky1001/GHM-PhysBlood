@@ -1,6 +1,7 @@
 -- GHM PhysBlood (1.26.6): is the shader pack of this version installed?
--- The Steam Workshop can not deliver compiled shaders, so players install them from the shader pack and keep whatever
--- they installed until they run a newer installer. A few seconds into a game the files of this version's pack
+-- (1.26.11) The shaders ship inside the Workshop addon (Garry's Mod allows shaders/fxc/*.vcs in addons). Loose copies in
+-- garrysmod/shaders/fxc from an older shader pack override them, so the check still runs; the shader pack on GitHub
+-- updates such copies and carries the optional native module. A few seconds into a game the files of this version's pack
 -- (sh_shaderver.lua: GHMPB.ShaderPack, written by tools/make_shader_manifest.py for every shader build) are checked:
 --   missing    no shader files: the Lite renderer runs
 --   incomplete some files missing (the DX11 _50 files only count when the game runs DirectX 11)
@@ -80,8 +81,9 @@ function SC.Text(r)
 	local pack = G.ShaderPack or {}
 	local t
 	if r.state == "missing" then
-		t = "The GHM PhysBlood shader files are not installed, so the mod runs in its Lite renderer (no flowing liquid, no wet, "
-			.. "glossy film). The Steam Workshop can not deliver compiled shaders: install the " .. r.version .. " shader pack for the full look."
+		t = "The GHM PhysBlood shader files did not load, so the mod runs in its Lite renderer (no flowing liquid, no wet, "
+			.. "glossy film). They come with the Workshop addon: if Garry's Mod did not mount them, re-subscribe, or install the "
+			.. r.version .. " shader pack for the full look."
 	elseif r.state == "incomplete" then
 		t = "Some GHM PhysBlood shader files are missing (" .. (r.need - r.have) .. " of " .. r.need .. "). "
 			.. "Run the installer of the " .. r.version .. " shader pack again."
@@ -89,7 +91,8 @@ function SC.Text(r)
 		t = "Your GHM PhysBlood shaders come from an older version: " .. #r.outdated .. " file(s) differ from the " .. r.version
 			.. " pack (" .. table.concat(r.outdated, ", ", 1, math.min(#r.outdated, 6)) .. (#r.outdated > 6 and ", ..." or "") .. "). "
 			.. "They still work, but this version's shader changes are missing" .. ((pack.notes and pack.notes ~= "") and (": " .. pack.notes) or "") .. ". "
-			.. "Install the " .. r.version .. " shader pack - its installer updates them in place."
+			.. "Older copies in garrysmod\\shaders\\fxc override the ones in the Workshop addon: install the " .. r.version
+			.. " shader pack (its installer updates them in place) or run the uninstaller of your old pack."
 	else
 		t = "The GHM PhysBlood shaders of this version (" .. r.version .. ") are installed."
 	end

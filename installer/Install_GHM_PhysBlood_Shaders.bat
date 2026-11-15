@@ -74,8 +74,8 @@ if defined FAILED (
 	echo  [!] Some files could not be copied. Close Garry's Mod and run this file again.
 	echo      If Garry's Mod is in Program Files, right-click this file and choose "Run as administrator".
 ) else (
-	echo  Done. Start Garry's Mod - or type ghmpb_reload in the console.
-	echo  ghmpb_status in the console shows which renderer is running.
+	echo  Done. Start Garry's Mod.
+	echo  ghmpb_shader_check in the console shows whether the shaders are installed.
 )
 goto :done
 

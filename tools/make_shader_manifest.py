@@ -15,7 +15,7 @@ page = re.search(r'page\s*=\s*"([^"]*)"', src)
 source = re.search(r'source\s*=\s*"([^"]*)"', src)
 url = url.group(1) if url else 'https://github.com/ky1001/GHM-PhysBlood/releases/latest'
 source = source.group(1) if source else 'https://github.com/ky1001/GHM-PhysBlood'
-page = page.group(1) if page else 'https://steamcommunity.com/sharedfiles/filedetails/?id=3824094759'
+page = page.group(1) if page else 'https://steamcommunity.com/profiles/76561198050670994/myworkshopfiles/?appid=4000'
 files = sorted(f for f in os.listdir(fxc) if f.startswith(pre) and f.endswith('.vcs'))
 if not files: raise SystemExit('no %s*.vcs in %s' % (pre, fxc))
 rows = []

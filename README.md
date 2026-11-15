@@ -3,7 +3,7 @@
 Physically simulated blood for Garry's Mod: flying droplets with real drag and break-up, forensic spatter, blood that
 flows, pools, clots and dries on the world and on bodies, footprints and smears.
 
-- **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3824094759
+- **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3828548254
 - **Shader pack download:** [Releases](https://github.com/ky1001/GHM-PhysBlood/releases/latest)
 
 This repository is the complete, readable source of the mod: the Lua addon (not obfuscated), the HLSL shaders, the
@@ -16,7 +16,7 @@ GitHub Actions. It replaces the old Google Drive download.
 |---|---|
 | `addon/ghm_physblood/` | The Garry's Mod addon: `lua/autorun/ghm_physblood.lua` loads every module in `lua/ghm_physblood/` (57 files, about 28,000 lines of Lua). Same code as the Workshop addon, without its textures and models. |
 | `shadersrc/` | HLSL source of the GPU simulation and shading (Shader Model 3, Source SDK `screenspace_general` style). The core is in `ghmpb_sim_main.h`, `ghmpb_shade.h`, `ghmpb_surface_main.h`, `ghmpb_surf_split.h`, `ghmpb_body_main.h`, `ghmpb_common.h` and `ghmpb_dust.h`; the `*_ps30.hlsl` / `*_vs30.hlsl` files are thin wrappers. |
-| `prebuilt/shaders/fxc/` | The 61 compiled shaders (`ghmpbb74_*.vcs`) that go into the shader pack. |
+| `prebuilt/shaders/fxc/` | The 61 compiled shaders (`ghmpbb74_*.vcs`) that go into the Workshop addon and the shader pack. |
 | `native/` | `ghm_physblood.cpp`: the optional droplet solver (`require("ghmpb_native_v5")`), and `build.sh` to build it. |
 | `installer/` | The plain-batch installer and uninstaller that ship in the shader pack. |
 | `tools/` | Pack builder, shader manifest writer, texture and spatter-data generators. |
@@ -25,9 +25,10 @@ GitHub Actions. It replaces the old Google Drive download.
 
 ## The shader pack
 
-The Steam Workshop cannot deliver compiled shaders or DLLs, so they come as a separate download. Without them the mod
-runs in its built-in Lite renderer. When the files are missing or outdated, the mod shows a window in game with a link
-to this repository's releases page.
+Since 1.26.11 the compiled shaders ship inside the Workshop addon (Garry's Mod allows `shaders/fxc/*.vcs` in addons),
+so the Workshop version needs no extra download. The Workshop does not allow DLLs, so the optional native module comes
+only from this pack. The pack is also the fix for players who still have older loose shader copies in
+`garrysmod/shaders/fxc` (those override the addon's files); the mod detects that and links here.
 
 What the zip contains:
 
@@ -40,8 +41,8 @@ What the zip contains:
 | `SHA256SUMS.txt` | Checksums of every file in the pack. |
 
 **Install:** close Garry's Mod, extract the zip, then run `Install_GHM_PhysBlood_Shaders.bat` or copy the zip's
-`garrysmod` folder over your GarrysMod folder (the one with `gmod.exe`). `ghmpb_status` in the console shows the
-renderer.
+`garrysmod` folder over your GarrysMod folder (the one with `gmod.exe`). `ghmpb_shader_check` in the console shows
+whether the shaders are installed.
 
 **Check a download:** every release is built by the `Build` workflow from a tagged commit, and the release notes link
 the build log and list the SHA-256 of the zip and the DLLs. Releases also carry a signed build-provenance attestation:

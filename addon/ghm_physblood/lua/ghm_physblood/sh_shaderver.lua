@@ -10,7 +10,7 @@ GHMPB.ShaderPack = {
 	notes = "two-pass enhanced world blood surface shader (surfbase_ps30 + surfcoat_ps30 + quarter-res fbblur_ps30, toggled live by ghmpb_surface_enhanced): liquid-lens meniscus refraction, sun and flashlight rim caustics, dual-scale capillary ripples, 3D normal-mapped micro and macro bubbles, fibrin clot mottling, full world 55-deg meniscus rim glints and 6-step screen-space reflections; clear scarlet pools like 1.26.2 that stay red as they clot, and every blood type clearer; pools no longer see-through (opaque from 0.18 mm, thin smears still see-through)",
 	url = "https://github.com/ky1001/GHM-PhysBlood/releases/latest",
 	source = "https://github.com/ky1001/GHM-PhysBlood",
-	page = "https://steamcommunity.com/sharedfiles/filedetails/?id=3824094759",
+	page = "https://steamcommunity.com/profiles/76561198050670994/myworkshopfiles/?appid=4000",
 	files = {
 		bake_ps30 = 617, bake_ps50 = 1627, blit_ps30 = 489, blit_ps50 = 397,
 		bodyfilm_ps30 = 11943, bodyfilm_ps50 = 33986, bodystatic_ps30 = 11439, bodystatic_ps50 = 31349,

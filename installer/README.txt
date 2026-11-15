@@ -1,8 +1,9 @@
 GHM PhysBlood - shader pack (version in the zip name)
 =====================================================
 
-The Steam Workshop cannot deliver compiled shaders (.vcs) or DLLs, so they come in this pack.
-Without them the mod still works in its built-in Lite renderer.
+Since 1.26.11 the shaders also ship inside the Workshop addon. This pack carries the optional native
+module (the Workshop does not allow DLLs) and updates older loose shader copies in your GarrysMod folder,
+which would otherwise be loaded instead of the addon's. Without any of it the mod still runs (Lite renderer).
 
 Everything here is built from the public source code:
   __REPO_URL__
@@ -29,7 +30,7 @@ INSTALL
      or copy the "garrysmod" folder from the zip over your GarrysMod folder by hand
        (the folder that contains gmod.exe, usually
         C:\Program Files (x86)\Steam\steamapps\common\GarrysMod).
-  4. Start Garry's Mod. Type ghmpb_status in the console to see which renderer runs.
+  4. Start Garry's Mod. Type ghmpb_shader_check in the console to see whether the shaders are installed.
 
 UNINSTALL
   Double-click Uninstall_GHM_PhysBlood_Shaders.bat, or delete the files listed above.
